@@ -1,0 +1,58 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Authors>Stephan Vedder</Authors>
+    <TargetFramework>netstandard1.1</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <DebugType>portable</DebugType>
+    <AssemblyName>OpenSage.FFmpeg</AssemblyName>
+    <PackageId>OpenSage.FFmpeg</PackageId>
+    <PackageVersion>$(AssemblyVersion)</PackageVersion>
+    <PackageTags>OpenSage FFmpeg wrapper/abstraction library</PackageTags>
+    <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/OpenSAGE/OpenSAGE.FFmpeg</PackageProjectUrl>
+    <DocumentationFile Condition="'$(Configuration)' == 'Release'">$(OutputPath)\OpenSage.FFmpeg.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="..\..\deps\ffmpeg\win-x64\avcodec-57.dll">
+      <PackagePath>runtimes/win-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\win-x64\avformat-57.dll">
+      <PackagePath>runtimes/win-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\win-x64\avutil-55.dll">
+      <PackagePath>runtimes/win-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\win-x64\libwinpthread-1.dll">
+      <PackagePath>runtimes/win-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\avcodec-57.so">
+      <PackagePath>runtimes/ubuntu-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\avformat-57.so">
+      <PackagePath>runtimes/ubuntu-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\avutil-55.so">
+      <PackagePath>runtimes/ubuntu-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\osx-x64\avcodec-57.dylib">
+      <PackagePath>runtimes/osx-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\osx-x64\avformat-57.dylib">
+      <PackagePath>runtimes/osx-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+    <Content Include="..\..\deps\ffmpeg\osx-x64\avutil-55.dylib">
+      <PackagePath>runtimes/osx-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
+  </ItemGroup>
+</Project>
