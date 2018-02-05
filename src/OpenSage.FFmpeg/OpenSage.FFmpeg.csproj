@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <Authors>Stephan Vedder</Authors>
-    <TargetFramework>netstandard1.1</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <DebugType>portable</DebugType>
     <AssemblyName>OpenSage.FFmpeg</AssemblyName>
@@ -54,5 +54,8 @@
       <PackagePath>runtimes/osx-x64/native</PackagePath>
       <Pack>true</Pack>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj" />
   </ItemGroup>
 </Project>
