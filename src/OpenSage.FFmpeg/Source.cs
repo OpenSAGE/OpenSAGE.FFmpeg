@@ -11,7 +11,15 @@ namespace OpenSage.FFmpeg
     {
         private AvStream _avStream;
         private AVFormatContext* _formatCtx;
+        private int _numVideoStreams;
+        private int _numAudioStreams;
+        private TimeSpan _duration;
 
+        private IVideoHandler _vidHandler;
+        private IAudioHandler _audioHandler;
+
+        public bool HasVideo => _numVideoStreams > 0;
+        public bool HasAudio => _numAudioStreams > 0;
 
         static Source()
         {
@@ -21,7 +29,7 @@ namespace OpenSage.FFmpeg
             ffmpeg.avcodec_register_all();
         }
 
-        public Source(Stream stream)
+        public Source(Stream stream,IVideoHandler vidHandler = null,IAudioHandler audioHandler=null)
         {
             //allocate a new format context
             _formatCtx = ffmpeg.avformat_alloc_context();
@@ -42,6 +50,45 @@ namespace OpenSage.FFmpeg
             {
                 throw new InvalidDataException("Cannot find stream info");
             }
+
+            _numVideoStreams = 0;
+            _numAudioStreams = 0;
+
+            //Iterate over all streams to get the overall number
+            for (int i = 0; i < _formatCtx->nb_streams; i++)
+            {
+                switch (_formatCtx->streams[i]->codec->codec_type)
+                {
+                    case AVMediaType.AVMEDIA_TYPE_VIDEO:
+                        _numVideoStreams++;
+                        break;
+                    case AVMediaType.AVMEDIA_TYPE_AUDIO:
+                        _numAudioStreams++;
+                        break;
+                    default:
+                        throw new NotSupportedException("Invalid stream type, which is not suppurted!");
+                }
+            }
+
+            double ms = _formatCtx->duration / (double)ffmpeg.AV_TIME_BASE;
+            _duration = TimeSpan.FromMilliseconds(ms);
+
+            for (int i = 0; i < _formatCtx->nb_streams; i++)
+            {
+                switch (_formatCtx->streams[i]->codec->codec_type)
+                {
+                    case AVMediaType.AVMEDIA_TYPE_VIDEO:
+                        _numVideoStreams++;
+                        break;
+                    case AVMediaType.AVMEDIA_TYPE_AUDIO:
+                        _numAudioStreams++;
+                        break;
+                    default:
+                        throw new NotSupportedException("Invalid stream type, which is not suppurted!");
+                }
+            }
+
+
         }
 
         ~Source()
