@@ -14,12 +14,18 @@ namespace OpenSage.FFmpeg
         private int _numVideoStreams;
         private int _numAudioStreams;
         private TimeSpan _duration;
+        private List<StreamContext> _streams;
+        private long _bitRate;
 
         private IVideoHandler _vidHandler;
         private IAudioHandler _audioHandler;
 
         public bool HasVideo => _numVideoStreams > 0;
         public bool HasAudio => _numAudioStreams > 0;
+
+        public TimeSpan Duration => _duration;
+
+        public List<StreamContext> Streams => _streams;
 
         static Source()
         {
@@ -51,6 +57,9 @@ namespace OpenSage.FFmpeg
                 throw new InvalidDataException("Cannot find stream info");
             }
 
+            //allocate the streams list
+            _streams = new List<StreamContext>();
+
             _numVideoStreams = 0;
             _numAudioStreams = 0;
 
@@ -71,23 +80,18 @@ namespace OpenSage.FFmpeg
             }
 
             double ms = _formatCtx->duration / (double)ffmpeg.AV_TIME_BASE;
-            _duration = TimeSpan.FromMilliseconds(ms);
+            _duration = TimeSpan.FromSeconds(ms);
+            _bitRate = _formatCtx->bit_rate;
 
             for (int i = 0; i < _formatCtx->nb_streams; i++)
             {
-                switch (_formatCtx->streams[i]->codec->codec_type)
-                {
-                    case AVMediaType.AVMEDIA_TYPE_VIDEO:
-                        _numVideoStreams++;
-                        break;
-                    case AVMediaType.AVMEDIA_TYPE_AUDIO:
-                        _numAudioStreams++;
-                        break;
-                    default:
-                        throw new NotSupportedException("Invalid stream type, which is not suppurted!");
-                }
+                StreamContext ctx = new StreamContext(_formatCtx->streams[i]);
+                _streams.Add(ctx);
             }
+        }
 
+        public void Start()
+        {
 
         }
 
