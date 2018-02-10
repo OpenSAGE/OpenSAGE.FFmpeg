@@ -14,7 +14,7 @@ namespace OpenSage.FFmpeg
         Paused
     }
 
-    public unsafe sealed class Source
+    public sealed unsafe class Source
     {
         //FFMPEG structs
         private AvStream _avStream;
@@ -80,33 +80,30 @@ namespace OpenSage.FFmpeg
             //allocate the streams list
             _streams = new List<StreamContext>();
 
+            double ms = _formatCtx->duration / (double)ffmpeg.AV_TIME_BASE;
+            _duration = TimeSpan.FromSeconds(ms);
+            _bitRate = _formatCtx->bit_rate;
+
             _numVideoStreams = 0;
             _numAudioStreams = 0;
 
             //Iterate over all streams to get the overall number
             for (int i = 0; i < _formatCtx->nb_streams; i++)
             {
-                switch (_formatCtx->streams[i]->codec->codec_type)
+                var avStream = _formatCtx->streams[i];
+                switch (avStream->codec->codec_type)
                 {
                     case AVMediaType.AVMEDIA_TYPE_VIDEO:
                         _numVideoStreams++;
+                        _streams.Add(new VideoContext(avStream,this));
                         break;
                     case AVMediaType.AVMEDIA_TYPE_AUDIO:
                         _numAudioStreams++;
+                        _streams.Add(new AudioContext(avStream, this));
                         break;
                     default:
                         throw new NotSupportedException("Invalid stream type, which is not suppurted!");
                 }
-            }
-
-            double ms = _formatCtx->duration / (double)ffmpeg.AV_TIME_BASE;
-            _duration = TimeSpan.FromSeconds(ms);
-            _bitRate = _formatCtx->bit_rate;
-
-            for (int i = 0; i < _formatCtx->nb_streams; i++)
-            {
-                StreamContext ctx = new StreamContext(_formatCtx->streams[i],this);
-                _streams.Add(ctx);
             }
 
             _packet = ffmpeg.av_packet_alloc();

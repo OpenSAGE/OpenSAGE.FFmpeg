@@ -69,12 +69,16 @@ namespace OpenSage.FFmpeg.Tests
 
         class AudioHandler : IAudioHandler
         {
-            public void CreateBuffer(int index, int frequency, int channels, long sampleRate)
+            public AudioLayout Layout => AudioLayout.Interleaved;
+            private int _bufferIndex = 0;
+
+
+            public int CreateBuffer(int frequency, int channels, long sampleRate)
             {
-               
+                return _bufferIndex++;
             }
 
-            public void UpdateBuffer(IntPtr data, int size)
+            public void UpdateBuffer(int buffer,IntPtr data, int size)
             {
                 
             }
