@@ -16,15 +16,19 @@ namespace OpenSage.FFmpeg
         private AVStream* _stream;
         private AVCodec* _codec;
         private AVCodecContext* _codecCtx;
+        private Source _source;
+        private AVFrame* _decoded;
+        private TimeSpan _position;
 
         private StreamType _type;
         private IStreamInfo _info; 
 
         public StreamType Type => _type;
 
-        public StreamContext(AVStream* stream)
+        public StreamContext(AVStream* stream,Source source)
         {
             _stream = stream;
+            _source = source;
             
             var origCtx = _stream->codec;
 
@@ -56,6 +60,11 @@ namespace OpenSage.FFmpeg
                         Frequency = _codecCtx->sample_rate,
                         Channels = _codecCtx->channels
                     };
+
+                    var audioHandler = _source.AudioHandler;
+                    //TODO: fix this to handle the index correctly
+                    var audioInfo = _info as AudioStreamInfo;
+                    audioHandler?.CreateBuffer(0, audioInfo.Frequency, audioInfo.Channels, audioInfo.BitRate);
                     break;
                 case AVMediaType.AVMEDIA_TYPE_VIDEO:
                     _type = StreamType.Video;
@@ -67,13 +76,69 @@ namespace OpenSage.FFmpeg
                         Height = _codecCtx->height,
                         Fps = ratio.num / ratio.den
                     };
+
+                    var vidHandler = _source.VideoHandler;
+                    //TODO: fix this to handle the index correctly
+                    var vidInfo = _info as VideoStreamInfo;
+                    vidHandler?.CreateTexture(0, vidInfo.Width, vidInfo.Height);
                     break;
                 default:
                     throw new NotSupportedException();
             }
 
+            _decoded = ffmpeg.av_frame_alloc();
+        }
+
+        public void ReceivePacket(AVPacket* packet)
+        {
+            //send the packet to the decoder
+            ffmpeg.avcodec_send_packet(_codecCtx, packet);
+
+            //get the decodec data
+            ffmpeg.avcodec_receive_frame(_codecCtx, _decoded);
+            double pts = ffmpeg.av_frame_get_best_effort_timestamp(_decoded);
+            pts *= _codecCtx->time_base.num / _codecCtx->time_base.den;
+            _position = TimeSpan.FromSeconds(pts);
+
+
+            switch (_type)
+            {
+                case StreamType.Video:
+                    UpdateVideo();
+                    break;
+                case StreamType.Audio:
+                    UpdateAudio();
+                    break;
+            }
+        }
+
+        //interpret the decoded frame as audio
+        private void UpdateAudio()
+        {
+            int data_size = ffmpeg.av_samples_get_buffer_size(null, _codecCtx->channels, _decoded->nb_samples, _codecCtx->sample_fmt, 1);
+
+            var audioHandler = _source.AudioHandler;
+
+            audioHandler.UpdateBuffer(new IntPtr(_decoded->data[0]), data_size);
+        }
+
+        //interpret the decoded frame as video
+        private void UpdateVideo()
+        {
 
         }
 
+
+        internal void Reset()
+        {
+            //enter draining mode
+            ffmpeg.avcodec_send_packet(_codecCtx, null);
+
+            //receive frames until there is no more data
+            while (ffmpeg.avcodec_receive_frame(_codecCtx, _decoded) != ffmpeg.AVERROR_EOF)
+            { }
+
+            ffmpeg.avcodec_flush_buffers(_codecCtx);
+        }
     }
 }

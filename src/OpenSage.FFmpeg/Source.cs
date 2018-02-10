@@ -7,15 +7,26 @@ using FFmpeg.AutoGen;
 
 namespace OpenSage.FFmpeg
 {
+    public enum PlayState
+    {
+        Playing,
+        Stopped,
+        Paused
+    }
+
     public unsafe sealed class Source
     {
+        //FFMPEG structs
         private AvStream _avStream;
         private AVFormatContext* _formatCtx;
+        private AVPacket* _packet;
+
         private int _numVideoStreams;
         private int _numAudioStreams;
         private TimeSpan _duration;
         private List<StreamContext> _streams;
         private long _bitRate;
+        private PlayState _state;
 
         private IVideoHandler _vidHandler;
         private IAudioHandler _audioHandler;
@@ -24,8 +35,12 @@ namespace OpenSage.FFmpeg
         public bool HasAudio => _numAudioStreams > 0;
 
         public TimeSpan Duration => _duration;
+        public long BitRate => _bitRate;
 
         public List<StreamContext> Streams => _streams;
+
+        internal IVideoHandler VideoHandler => _vidHandler;
+        internal IAudioHandler AudioHandler => _audioHandler;
 
         static Source()
         {
@@ -37,6 +52,11 @@ namespace OpenSage.FFmpeg
 
         public Source(Stream stream,IVideoHandler vidHandler = null,IAudioHandler audioHandler=null)
         {
+            _state = PlayState.Stopped;
+
+            _vidHandler = vidHandler;
+            _audioHandler = audioHandler;
+
             //allocate a new format context
             _formatCtx = ffmpeg.avformat_alloc_context();
 
@@ -85,14 +105,63 @@ namespace OpenSage.FFmpeg
 
             for (int i = 0; i < _formatCtx->nb_streams; i++)
             {
-                StreamContext ctx = new StreamContext(_formatCtx->streams[i]);
+                StreamContext ctx = new StreamContext(_formatCtx->streams[i],this);
                 _streams.Add(ctx);
             }
+
+            _packet = ffmpeg.av_packet_alloc();
         }
 
         public void Start()
         {
+            //should reset to frame 0 
+            if(_state==PlayState.Stopped)
+            {
+                Reset();
+                _state = PlayState.Playing;
+            }
 
+            while(_state==PlayState.Playing && (ffmpeg.av_read_frame(_formatCtx,_packet)>=0))
+            {
+                if(_packet==null)
+                {
+                    throw new InvalidDataException("Empty packet! Probably should continue");
+                }
+
+                int streamIdx = _packet->stream_index;
+
+                var ctx = _streams[streamIdx];
+                ctx.ReceivePacket(_packet);
+            }
+
+        }
+
+        //reset the codecCtx
+        private void Reset()
+        {
+            //flush the format context
+            if(ffmpeg.avformat_flush(_formatCtx)<0)
+            {
+                throw new InvalidOperationException();
+            }
+
+            //flush all streams
+            foreach (var stream in _streams)
+            {
+                stream.Reset();
+            }
+
+            //seek back to the beginning
+            //if (ffmpeg.avio_seek(_avStream.GetContext(), 0, 0) < 0)
+            //{
+            //    throw new InvalidOperationException();
+            //}
+
+            for (int i = 0; i < _streams.Count; ++i)
+            {
+                if (ffmpeg.av_seek_frame(_formatCtx, i, 0, ffmpeg.AVSEEK_FLAG_FRAME) < 0)
+                    throw new InvalidOperationException();
+            }
         }
 
         ~Source()
@@ -100,6 +169,11 @@ namespace OpenSage.FFmpeg
             fixed (AVFormatContext** ctxPtr = &_formatCtx)
             {
                 ffmpeg.avformat_close_input(ctxPtr);
+            };
+
+            fixed (AVPacket** pktPtr = &_packet)
+            {
+                ffmpeg.av_packet_free(pktPtr);
             };
         }
     }

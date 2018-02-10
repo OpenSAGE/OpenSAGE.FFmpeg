@@ -77,5 +77,10 @@ namespace OpenSage.FFmpeg
             _stream.Seek(offset, origin);
             return _stream.Position;
         }
+
+        internal AVIOContext* GetContext()
+        {
+            return _context;
+        }
     }
 }

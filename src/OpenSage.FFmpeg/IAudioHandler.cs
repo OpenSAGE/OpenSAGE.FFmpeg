@@ -6,7 +6,7 @@ namespace OpenSage.FFmpeg
 {
     public interface IAudioHandler
     {
-        void CreateBuffer();
-        void UpdateBuffer(byte[] data);
+        void CreateBuffer(int index, int frequency, int channels, long sampleRate);
+        void UpdateBuffer(IntPtr data,int size);
     }
 }
