@@ -76,6 +76,7 @@ namespace OpenSage.FFmpeg
             //TODO: fix this to handle the index correctly
             var audioInfo = _info as AudioStreamInfo;
 
+            _buffers = new List<int>();
             if (audioHandler != null)
             {
                 for (int i = 0; i < _chainSize; ++i)
