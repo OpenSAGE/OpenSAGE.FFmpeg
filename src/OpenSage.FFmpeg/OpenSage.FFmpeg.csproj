@@ -26,6 +26,10 @@
       <PackagePath>runtimes/win-x64/native</PackagePath>
       <Pack>true</Pack>
     </Content>
+    <Content Include="..\..\deps\ffmpeg\win-x64\swresample-2.dll">
+      <PackagePath>runtimes/win-x64/native</PackagePath>
+      <Pack>true</Pack>
+    </Content>
     <Content Include="..\..\deps\ffmpeg\win-x64\libwinpthread-1.dll">
       <PackagePath>runtimes/win-x64/native</PackagePath>
       <Pack>true</Pack>
