@@ -24,6 +24,9 @@
     <None Include="..\..\deps\ffmpeg\win-x64\swresample-2.dll" Link="swresample-2.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="..\..\deps\ffmpeg\win-x64\swscale-4.dll" Link="swscale-4.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="..\..\deps\ffmpeg\win-x64\libwinpthread-1.dll" Link="libwinpthread-1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
