@@ -4,7 +4,9 @@ configuration: Release
 install:
 - ps: >-
     git submodule update --init --recursive
+
     cd src
+    
     dotnet restore
 
 build:
