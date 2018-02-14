@@ -14,47 +14,15 @@
     <DocumentationFile Condition="'$(Configuration)' == 'Release'">$(OutputPath)\OpenSage.FFmpeg.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="..\..\deps\ffmpeg\win-x64\avcodec-57.dll">
+    <Content Include="..\..\deps\ffmpeg\win-x64\*.dll">
       <PackagePath>runtimes/win-x64/native</PackagePath>
       <Pack>true</Pack>
     </Content>
-    <Content Include="..\..\deps\ffmpeg\win-x64\avformat-57.dll">
-      <PackagePath>runtimes/win-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\win-x64\avutil-55.dll">
-      <PackagePath>runtimes/win-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\win-x64\swresample-2.dll">
-      <PackagePath>runtimes/win-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\win-x64\libwinpthread-1.dll">
-      <PackagePath>runtimes/win-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\avcodec-57.so">
+    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\*.so">
       <PackagePath>runtimes/ubuntu-x64/native</PackagePath>
       <Pack>true</Pack>
     </Content>
-    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\avformat-57.so">
-      <PackagePath>runtimes/ubuntu-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\ubuntu-x64\avutil-55.so">
-      <PackagePath>runtimes/ubuntu-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\osx-x64\avcodec-57.dylib">
-      <PackagePath>runtimes/osx-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\osx-x64\avformat-57.dylib">
-      <PackagePath>runtimes/osx-x64/native</PackagePath>
-      <Pack>true</Pack>
-    </Content>
-    <Content Include="..\..\deps\ffmpeg\osx-x64\avutil-55.dylib">
+    <Content Include="..\..\deps\ffmpeg\osx-x64\*.dylib">
       <PackagePath>runtimes/osx-x64/native</PackagePath>
       <Pack>true</Pack>
     </Content>
