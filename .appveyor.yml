@@ -6,19 +6,21 @@ install:
     git submodule update --init --recursive
 
     cd src
-    
+
     dotnet restore
 
 build:
   project: src/OpenSage.FFmpeg.sln
   verbosity: minimal
 
+artifacts:
+- path: src\OpenSage.FFmpeg\bin\Release\*.nupkg
+  name: OpenSage.FFmpeg Nuget
+
 deploy:
   provider: NuGet
   server: https://www.myget.org/F/feliwir/api/v2/package
   api_key:
     secure: weRKCN6uh+JEb70fPUrGkOgcSyzkeoXydxHiqcPuZj+kP60lJ+c0MV9hcGCP+s0u
-  skip_symbols: true
-  artifact: /.*\.nupkg/
   on:
     branch: master
