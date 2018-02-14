@@ -11,6 +11,7 @@
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/OpenSAGE/OpenSAGE.FFmpeg</PackageProjectUrl>
     <DocumentationFile Condition="'$(Configuration)' == 'Release'">$(OutputPath)\OpenSage.FFmpeg.xml</DocumentationFile>
+    <Description>A library for accessing FFmpeg functionality from C#</Description>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="..\..\deps\ffmpeg\win-x64\*.dll">

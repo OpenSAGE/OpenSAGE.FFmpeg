@@ -1,0 +1,20 @@
+version: 1.0.{build}
+image: Visual Studio 2017
+configuration: Release
+install:
+- ps: >-
+    cd src
+
+build:
+  project: src/OpenSage.FFmpeg.sln
+  verbosity: minimal
+
+deploy:
+  provider: NuGet
+  server: https://www.myget.org/F/feliwir/api/v2/package
+  api_key:
+    secure: weRKCN6uh+JEb70fPUrGkOgcSyzkeoXydxHiqcPuZj+kP60lJ+c0MV9hcGCP+s0u
+  skip_symbols: true
+  artifact: /.*\.nupkg/
+  on:
+    branch: master
