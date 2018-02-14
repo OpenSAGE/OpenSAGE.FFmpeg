@@ -1,5 +1,4 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <Authors>Stephan Vedder</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -28,6 +27,7 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj" />
+    <Compile Include="..\..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\*.cs" Link="AutoGen\%(Filename)%(Extension)" />
+    <Compile Include="..\..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\Native\*.cs" Link="AutoGen\Native\%(Filename)%(Extension)" />
   </ItemGroup>
 </Project>

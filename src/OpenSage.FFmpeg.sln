@@ -7,8 +7,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenSage.FFmpeg", "OpenSage
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenSage.FFmpeg.Tests", "OpenSage.FFmpeg.Tests\OpenSage.FFmpeg.Tests.csproj", "{CAC350D9-CC7D-4DA6-877C-DD92FF880776}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FFmpeg.AutoGen", "..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\FFmpeg.AutoGen.csproj", "{B555A07E-BB34-4851-B4AB-41116DB467FE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,10 +21,6 @@ Global
 		{CAC350D9-CC7D-4DA6-877C-DD92FF880776}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CAC350D9-CC7D-4DA6-877C-DD92FF880776}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CAC350D9-CC7D-4DA6-877C-DD92FF880776}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B555A07E-BB34-4851-B4AB-41116DB467FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B555A07E-BB34-4851-B4AB-41116DB467FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B555A07E-BB34-4851-B4AB-41116DB467FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B555A07E-BB34-4851-B4AB-41116DB467FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
