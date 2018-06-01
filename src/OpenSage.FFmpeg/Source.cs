@@ -1,8 +1,8 @@
-﻿using System;
+﻿using OpenSage.FFmpegNative;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using FFmpeg.AutoGen;
 
 
 namespace OpenSage.FFmpeg
@@ -41,14 +41,6 @@ namespace OpenSage.FFmpeg
 
         internal IVideoHandler VideoHandler => _vidHandler;
         internal IAudioHandler AudioHandler => _audioHandler;
-
-        static Source()
-        {
-            ffmpeg.RootPath = Environment.CurrentDirectory;
-
-            ffmpeg.av_register_all();
-            ffmpeg.avcodec_register_all();
-        }
 
         public Source(Stream stream,IVideoHandler vidHandler = null,IAudioHandler audioHandler=null)
         {

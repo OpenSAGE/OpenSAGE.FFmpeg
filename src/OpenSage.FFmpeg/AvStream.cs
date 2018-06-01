@@ -1,7 +1,7 @@
-﻿using System;
+﻿using OpenSage.FFmpegNative;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using FFmpeg.AutoGen;
 
 namespace OpenSage.FFmpeg
 {

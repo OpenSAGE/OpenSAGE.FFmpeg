@@ -1,15 +1,14 @@
-﻿using System;
+﻿using OpenSage.FFmpegNative;
+using System;
 using System.Collections.Generic;
-using System.Text;
-using FFmpeg.AutoGen;
 
 namespace OpenSage.FFmpeg
 {
     public sealed unsafe class AudioContext : StreamContext
     {
         private AVFrame* _resampled;
-        private SwrContext* _resampler;
-        private AVSampleFormat _smplFmt;
+        private FFmpegNative.SwrContext* _resampler;
+        private FFmpegNative.AVSampleFormat _smplFmt;
         /// <summary>
         /// use a chain of buffers to ensure smooth playback
         /// </summary>
@@ -22,7 +21,7 @@ namespace OpenSage.FFmpeg
         /// </summary>
         /// <param name="stream">the underlying libav stream</param>
         /// <param name="source">the container</param>
-        public AudioContext(AVStream* stream, Source source) : base(stream, source)
+        internal AudioContext(AVStream* stream, Source source) : base(stream, source)
         {
             _type = StreamType.Audio;
             _info = new AudioStreamInfo()
@@ -92,7 +91,7 @@ namespace OpenSage.FFmpeg
         /// </summary>
         protected override void Update()
         {
-            AVFrame* frame = _decoded;
+            FFmpegNative.AVFrame* frame = _decoded;
 
             //check if we must perform resampling
             bool resample = (_smplFmt != _codecCtx->sample_fmt);

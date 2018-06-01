@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
@@ -12,19 +12,19 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.3.1" />
     <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
 
-    <None Include="..\..\deps\ffmpeg\win-x64\avcodec-57.dll" Link="avcodec-57.dll">
+    <None Include="..\..\deps\ffmpeg\win-x64\avcodec-58.dll" Link="avcodec-58.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\deps\ffmpeg\win-x64\avformat-57.dll" Link="avformat-57.dll">
+    <None Include="..\..\deps\ffmpeg\win-x64\avformat-58.dll" Link="avformat-58.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\deps\ffmpeg\win-x64\avutil-55.dll" Link="avutil-55.dll">
+    <None Include="..\..\deps\ffmpeg\win-x64\avutil-56.dll" Link="avutil-56.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\deps\ffmpeg\win-x64\swresample-2.dll" Link="swresample-2.dll">
+    <None Include="..\..\deps\ffmpeg\win-x64\swresample-3.dll" Link="swresample-3.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="..\..\deps\ffmpeg\win-x64\swscale-4.dll" Link="swscale-4.dll">
+    <None Include="..\..\deps\ffmpeg\win-x64\swscale-5.dll" Link="swscale-5.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="..\..\deps\ffmpeg\win-x64\libwinpthread-1.dll" Link="libwinpthread-1.dll">

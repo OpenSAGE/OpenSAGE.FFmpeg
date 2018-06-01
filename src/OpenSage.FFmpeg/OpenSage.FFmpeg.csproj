@@ -27,8 +27,4 @@
       <Pack>true</Pack>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\*.cs" Link="AutoGen\%(Filename)%(Extension)" />
-    <Compile Include="..\..\deps\FFmpeg.AutoGen\FFmpeg.AutoGen\Native\*.cs" Link="AutoGen\Native\%(Filename)%(Extension)" />
-  </ItemGroup>
 </Project>

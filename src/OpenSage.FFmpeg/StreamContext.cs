@@ -1,6 +1,7 @@
-﻿using FFmpeg.AutoGen;
+﻿using OpenSage.FFmpegNative;
 using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.Text;
 
 namespace OpenSage.FFmpeg
@@ -16,11 +17,11 @@ namespace OpenSage.FFmpeg
 
     public abstract unsafe class StreamContext
     {
-        protected AVStream* _stream;
-        protected AVCodec* _codec;
-        protected AVCodecContext* _codecCtx;
-        protected Source _source;
-        protected AVFrame* _decoded;
+        internal AVStream* _stream;
+        internal AVCodec* _codec;
+        internal AVCodecContext* _codecCtx;
+        internal Source _source;
+        internal AVFrame* _decoded;
         private TimeSpan _position;
 
         protected StreamType _type;
@@ -28,17 +29,16 @@ namespace OpenSage.FFmpeg
 
         public StreamType Type => _type;
 
-        public StreamContext(AVStream* stream,Source source)
+        internal StreamContext(AVStream* stream,Source source)
         {
             _stream = stream;
             _source = source;
-            
             var origCtx = _stream->codec;
 
             //find the corresponding codec
             _codec = ffmpeg.avcodec_find_decoder(origCtx->codec_id);
             if (_codec == null)
-                throw new NotSupportedException("This " + ffmpeg.av_get_media_type_string(origCtx->codec_type) + 
+                throw new NotSupportedException("This " + Marshal.PtrToStringAnsi(ffmpeg.av_get_media_type_string(origCtx->codec_type)) + 
                                                 " codec is not supported by the current ffmpeg binaries!");
 
             //copy the context from ffmpeg (required because we don't own the other one)
@@ -60,7 +60,7 @@ namespace OpenSage.FFmpeg
         /// <summary>
         /// Called by the demuxer when a new packet arrives
         /// </summary>
-        public void ReceivePacket(AVPacket* packet)
+        internal void ReceivePacket(AVPacket* packet)
         {
             //send the packet to the decoder
             ffmpeg.avcodec_send_packet(_codecCtx, packet);

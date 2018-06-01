@@ -1,3 +1,0 @@
-[submodule "deps/FFmpeg.AutoGen"]
-	path = deps/FFmpeg.AutoGen
-	url = https://github.com/Ruslan-B/FFmpeg.AutoGen.git
