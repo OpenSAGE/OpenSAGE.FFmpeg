@@ -1,4 +1,5 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk" InitialTargets="SetVersion">
+  <Import Project="..\..\Version.targets" />
   <PropertyGroup>
     <Authors>Stephan Vedder</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -6,7 +7,6 @@
     <DebugType>portable</DebugType>
     <AssemblyName>OpenSage.FFmpeg</AssemblyName>
     <PackageId>OpenSage.FFmpeg</PackageId>
-    <PackageVersion>$(AssemblyVersion)</PackageVersion>
     <PackageTags>OpenSage FFmpeg wrapper/abstraction library</PackageTags>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageProjectUrl>https://github.com/OpenSAGE/OpenSAGE.FFmpeg</PackageProjectUrl>
@@ -26,5 +26,8 @@
       <PackagePath>runtimes/osx-x64/native</PackagePath>
       <Pack>true</Pack>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="GitInfo" Version="2.0.11" />
   </ItemGroup>
 </Project>

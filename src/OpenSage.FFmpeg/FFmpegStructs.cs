@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
+#pragma warning disable CS0649
+
 namespace OpenSage.FFmpegNative
 {
     internal unsafe struct _iobuf
@@ -2464,103 +2466,105 @@ namespace OpenSage.FFmpegNative
         internal int @height;
     }
 
-    public unsafe struct AVAudioFifo
+    internal unsafe struct AVAudioFifo
     {
     }
 
-    public unsafe struct AVBPrint
+    internal unsafe struct AVBPrint
     {
     }
 
-    public unsafe struct AVDictionary
+    internal unsafe struct AVDictionary
     {
     }
 
-    public unsafe struct AVBuffer
+    internal unsafe struct AVBuffer
     {
     }
 
-    public unsafe struct AVBufferPool
+    internal unsafe struct AVBufferPool
     {
     }
 
-    public unsafe struct AVHWDeviceInternal
+    internal unsafe struct AVHWDeviceInternal
     {
     }
 
-    public unsafe struct AVHWFramesInternal
+    internal unsafe struct AVHWFramesInternal
     {
     }
 
-    public unsafe struct SwrContext
+    internal unsafe struct SwrContext
     {
     }
 
-    public unsafe struct SwsContext
+    internal unsafe struct SwsContext
     {
     }
 
-    public unsafe struct AVCodecDefault
+    internal unsafe struct AVCodecDefault
     {
     }
 
-    public unsafe struct AVCodecHWConfigInternal
+    internal unsafe struct AVCodecHWConfigInternal
     {
     }
 
-    public unsafe struct AVCodecInternal
+    internal unsafe struct AVCodecInternal
     {
     }
 
-    public unsafe struct MpegEncContext
+    internal unsafe struct MpegEncContext
     {
     }
 
-    public unsafe struct AVBSFInternal
+    internal unsafe struct AVBSFInternal
     {
     }
 
-    public unsafe struct AVBSFList
+    internal unsafe struct AVBSFList
     {
     }
 
-    public unsafe struct AVStreamInternal
+    internal unsafe struct AVStreamInternal
     {
     }
 
-    public unsafe struct AVFormatInternal
+    internal unsafe struct AVFormatInternal
     {
     }
 
-    public unsafe struct AVCodecTag
+    internal unsafe struct AVCodecTag
     {
     }
 
-    public unsafe struct URLContext
+    internal unsafe struct URLContext
     {
     }
 
-    public unsafe struct AVFilterPad
+    internal unsafe struct AVFilterPad
     {
     }
 
-    public unsafe struct AVFilterFormats
+    internal unsafe struct AVFilterFormats
     {
     }
 
-    public unsafe struct AVFilterChannelLayouts
+    internal unsafe struct AVFilterChannelLayouts
     {
     }
 
-    public unsafe struct AVFilterGraphInternal
+    internal unsafe struct AVFilterGraphInternal
     {
     }
 
-    public unsafe struct AVFilterInternal
+    internal unsafe struct AVFilterInternal
     {
     }
 
-    public unsafe struct AVFilterCommand
+    internal unsafe struct AVFilterCommand
     {
     }
 }
+
+#pragma warning restore CS0649
