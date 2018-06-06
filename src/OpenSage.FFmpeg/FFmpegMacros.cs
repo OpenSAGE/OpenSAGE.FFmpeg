@@ -8,6 +8,15 @@ namespace OpenSage.FFmpegNative
         public static ulong UINT64_C<T>(T a)
             => Convert.ToUInt64(a);
 
+        public static int AVERROR<T1>(T1 a)
+            => -Convert.ToInt32(a);
+
+        public const int EAGAIN = 11;
+
+        public const int ENOMEM = 12;
+
+        public const int EINVAL = 22;
+
         public static int MKTAG<T1, T2, T3, T4>(T1 a, T2 b, T3 c, T4 d)
             => (int)(Convert.ToUInt32(a) | (Convert.ToUInt32(b) << 8) | (Convert.ToUInt32(c) << 16) | (Convert.ToUInt32(d) << 24));
 
@@ -1546,8 +1555,6 @@ namespace OpenSage.FFmpegNative
         public const int SWS_DIRECT_BGR = 0x8000;
         /// <summary>SWS_ERROR_DIFFUSION = 0x800000</summary>
         public const int SWS_ERROR_DIFFUSION = 0x800000;
-        /// <summary>SWS_FAST_BILINEAR = 0x1</summary>
-        public const int SWS_FAST_BILINEAR = 0x1;
         /// <summary>SWS_FULL_CHR_H_INP = 0x4000</summary>
         public const int SWS_FULL_CHR_H_INP = 0x4000;
         /// <summary>SWS_FULL_CHR_H_INT = 0x2000</summary>
@@ -1574,5 +1581,7 @@ namespace OpenSage.FFmpegNative
         public const int SWS_SRC_V_CHR_DROP_SHIFT = 0x10;
         /// <summary>SWS_X = 0x8</summary>
         public const int SWS_X = 0x8;
+        /// <summary>SWS_FAST_BILINEAR = 0x1</summary>
+        public const int SWS_FAST_BILINEAR = 0x1;
     }
 }

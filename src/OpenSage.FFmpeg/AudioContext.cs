@@ -7,8 +7,8 @@ namespace OpenSage.FFmpeg
     public sealed unsafe class AudioContext : StreamContext
     {
         private AVFrame* _resampled;
-        private FFmpegNative.SwrContext* _resampler;
-        private FFmpegNative.AVSampleFormat _smplFmt;
+        private SwrContext* _resampler;
+        private AVSampleFormat _smplFmt;
         /// <summary>
         /// use a chain of buffers to ensure smooth playback
         /// </summary>
@@ -50,14 +50,14 @@ namespace OpenSage.FFmpeg
                 case AVSampleFormat.AV_SAMPLE_FMT_S32P:
                 case AVSampleFormat.AV_SAMPLE_FMT_FLTP:
                 case AVSampleFormat.AV_SAMPLE_FMT_DBLP:
-                    if (audioHandler?.Layout == AudioLayout.Interleaved)
+                    if (audioHandler?.Layout == DataLayout.Interleaved)
                     {
                         //this is the interval from planar to interleaved formats
                         _smplFmt -= 5;
                     }
                     break;
                 case AVSampleFormat.AV_SAMPLE_FMT_S64P:
-                    if (audioHandler?.Layout == AudioLayout.Interleaved)
+                    if (audioHandler?.Layout == DataLayout.Interleaved)
                     {
                         //this is the interval from planar to interleaved formats
                         _smplFmt = AVSampleFormat.AV_SAMPLE_FMT_S64;
@@ -91,7 +91,7 @@ namespace OpenSage.FFmpeg
         /// </summary>
         protected override void Update()
         {
-            FFmpegNative.AVFrame* frame = _decoded;
+            AVFrame* frame = _decoded;
 
             //check if we must perform resampling
             bool resample = (_smplFmt != _codecCtx->sample_fmt);
@@ -109,7 +109,7 @@ namespace OpenSage.FFmpeg
 
             //Only use the first data plane
             var buffer = _buffers[_currentBuffer];
-            audioHandler?.UpdateBuffer(buffer,new IntPtr(_decoded->data[0]), data_size);
+            audioHandler?.UpdateBuffer(buffer,(IntPtr)_decoded->data[0], data_size);
 
             if (_currentBuffer==_chainSize)
             {

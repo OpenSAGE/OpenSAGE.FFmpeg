@@ -32,4 +32,11 @@ namespace OpenSage.FFmpeg
         public int Frequency { get; set; }
         public int Channels { get; set; }
     }
+
+    public enum DataLayout
+    {
+        Any,
+        Interleaved,
+        Planar
+    }
 }

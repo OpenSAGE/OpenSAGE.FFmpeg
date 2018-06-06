@@ -56,20 +56,24 @@ namespace OpenSage.FFmpeg.Tests
 
         class VideoHandler : IVideoHandler
         {
+            public DataLayout Layout => DataLayout.Interleaved;
+            public int Frames = 0;
+
+
             public void CreateTexture(int index, int width, int height)
             {
                
             }
 
-            public void UpdateTexture(int index, byte[] data)
+            public void UpdateTexture(int index, IntPtr data, int size)
             {
-                
+                Frames++;
             }
         }
 
         class AudioHandler : IAudioHandler
         {
-            public AudioLayout Layout => AudioLayout.Interleaved;
+            public DataLayout Layout => DataLayout.Interleaved;
             private int _bufferIndex = 0;
 
 

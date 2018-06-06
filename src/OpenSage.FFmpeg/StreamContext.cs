@@ -1,6 +1,7 @@
 ﻿using OpenSage.FFmpegNative;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -62,16 +63,24 @@ namespace OpenSage.FFmpeg
         /// </summary>
         internal void ReceivePacket(AVPacket* packet)
         {
-            //send the packet to the decoder
-            ffmpeg.avcodec_send_packet(_codecCtx, packet);
+            int gotFrame = 0;
+            int result = 0;
 
-            //get the decodec data
-            ffmpeg.avcodec_receive_frame(_codecCtx, _decoded);
-            double pts = ffmpeg.av_frame_get_best_effort_timestamp(_decoded);
-            pts *= _codecCtx->time_base.num / _codecCtx->time_base.den;
-            _position = TimeSpan.FromSeconds(pts);
+            if (packet != null)
+            {
+                result = ffmpeg.avcodec_send_packet(_codecCtx, packet);
+            }
 
-            Update();          
+            //get the decoded data
+            result = ffmpeg.avcodec_receive_frame(_codecCtx, _decoded);
+            if (result >= 0)
+            {
+                double pts = ffmpeg.av_frame_get_best_effort_timestamp(_decoded);
+                pts *= _codecCtx->time_base.num / _codecCtx->time_base.den;
+                _position = TimeSpan.FromSeconds(pts);
+
+                Update();
+            }
         }
 
         /// <summary>

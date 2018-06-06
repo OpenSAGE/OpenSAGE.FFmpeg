@@ -42,7 +42,7 @@ namespace OpenSage.FFmpeg
         internal IVideoHandler VideoHandler => _vidHandler;
         internal IAudioHandler AudioHandler => _audioHandler;
 
-        public Source(Stream stream,IVideoHandler vidHandler = null,IAudioHandler audioHandler=null)
+        public Source(Stream stream, IVideoHandler vidHandler = null, IAudioHandler audioHandler = null)
         {
             _state = PlayState.Stopped;
 
@@ -58,13 +58,13 @@ namespace OpenSage.FFmpeg
 
             fixed (AVFormatContext** ctxPtr = &_formatCtx)
             {
-                if(ffmpeg.avformat_open_input(ctxPtr, "", null, null)!=0)
+                if (ffmpeg.avformat_open_input(ctxPtr, "", null, null) != 0)
                 {
                     throw new InvalidDataException("Cannot open input");
                 }
             }
 
-            if(ffmpeg.avformat_find_stream_info(_formatCtx, null)<0)
+            if (ffmpeg.avformat_find_stream_info(_formatCtx, null) < 0)
             {
                 throw new InvalidDataException("Cannot find stream info");
             }
@@ -87,7 +87,7 @@ namespace OpenSage.FFmpeg
                 {
                     case AVMediaType.AVMEDIA_TYPE_VIDEO:
                         _numVideoStreams++;
-                        _streams.Add(new VideoContext(avStream,this));
+                        _streams.Add(new VideoContext(avStream, this));
                         break;
                     case AVMediaType.AVMEDIA_TYPE_AUDIO:
                         _numAudioStreams++;
@@ -101,18 +101,13 @@ namespace OpenSage.FFmpeg
             _packet = ffmpeg.av_packet_alloc();
         }
 
-        public void Start()
+        public bool GetFrame()
         {
-            //should reset to frame 0 
-            if(_state==PlayState.Stopped)
-            {
-                Reset();
-                _state = PlayState.Playing;
-            }
+            bool keepGoing = false;
 
-            while(_state==PlayState.Playing && (ffmpeg.av_read_frame(_formatCtx,_packet)>=0))
+            while (ffmpeg.av_read_frame(_formatCtx, _packet) >= 0)
             {
-                if(_packet==null)
+                if (_packet == null)
                 {
                     throw new InvalidDataException("Empty packet! Probably should continue");
                 }
@@ -123,13 +118,35 @@ namespace OpenSage.FFmpeg
                 ctx.ReceivePacket(_packet);
             }
 
+            return keepGoing;
+        }
+
+        public void Loop()
+        {
+            while (_state == PlayState.Playing)
+            {
+                if (!GetFrame())
+                    break;
+            }
+        }
+
+        public void Start()
+        {
+            //should reset to frame 0 
+            if (_state == PlayState.Stopped)
+            {
+                Reset();
+                _state = PlayState.Playing;
+            }
+
+            Loop();
         }
 
         //reset the codecCtx
         private void Reset()
         {
             //flush the format context
-            if(ffmpeg.avformat_flush(_formatCtx)<0)
+            if (ffmpeg.avformat_flush(_formatCtx) < 0)
             {
                 throw new InvalidOperationException();
             }

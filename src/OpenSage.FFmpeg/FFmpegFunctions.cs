@@ -11,6 +11,7 @@ namespace OpenSage.FFmpegNative
         private const string avcodec = "avcodec-58";
         private const string avutil = "avutil-56";
         private const string swresample = "swresample-3";
+        private const string swscale = "swscale-5";
 
         //AVFORMAT
         [DllImport(avformat, CallingConvention = CallingConvention.Cdecl)]
@@ -58,6 +59,12 @@ namespace OpenSage.FFmpegNative
         [DllImport(avutil, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern IntPtr av_get_media_type_string(AVMediaType @media_type);
 
+        [DllImport(avutil, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void av_free(void* @ptr);
+
+        [DllImport(avutil, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern void* av_malloc(ulong @size);
+
         //AVCODEC
         [DllImport(avcodec, CallingConvention = CallingConvention.Cdecl)]
         public static extern void avcodec_register_all();
@@ -89,6 +96,12 @@ namespace OpenSage.FFmpegNative
         [DllImport(avcodec, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         public static extern void avcodec_flush_buffers(AVCodecContext* @avctx);
 
+        [DllImport(avcodec, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int avpicture_fill(AVPicture* @picture, byte* @ptr, AVPixelFormat @pix_fmt, int @width, int @height);
+
+        [DllImport(avcodec, CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        public static extern int avpicture_get_size(AVPixelFormat @pix_fmt, int @width, int @height);
+
         //SWRESAMPLE
         [DllImport(swresample, CallingConvention = CallingConvention.Cdecl)]
         public static extern int swr_convert_frame(SwrContext* @swr, AVFrame* @output, AVFrame* @input);
@@ -99,5 +112,13 @@ namespace OpenSage.FFmpegNative
         [DllImport(swresample, CallingConvention = CallingConvention.Cdecl)]
         public static extern SwrContext* swr_alloc_set_opts(SwrContext* @s, long @out_ch_layout, AVSampleFormat @out_sample_fmt, int @out_sample_rate, long @in_ch_layout,
                                                             AVSampleFormat @in_sample_fmt, int @in_sample_rate, int @log_offset, void* @log_ctx);
+
+        //SWSCALE
+        [DllImport(swscale, CallingConvention = CallingConvention.Cdecl)]
+        public static extern SwsContext* sws_getContext(int @srcW, int @srcH, AVPixelFormat @srcFormat, int @dstW, int @dstH, AVPixelFormat @dstFormat, int @flags, 
+            SwsFilter* @srcFilter, SwsFilter* @dstFilter, double* @param);
+
+        [DllImport(swscale, CallingConvention = CallingConvention.Cdecl)]
+        public static extern int sws_scale(SwsContext* @c, byte*[] @srcSlice, int[] @srcStride, int @srcSliceY, int @srcSliceH, byte*[] @dst, int[] @dstStride);
     }
 }
